@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "YOUR_FIREBASE_PROJECT_ID"
+    "default": "fillament-e9d3c"
   },
   "targets": {
-    "YOUR_FIREBASE_PROJECT_ID": {
+    "fillament-e9d3c": {
       "hosting": {
-        "landing": ["YOUR_LANDING_SITE_ID"],
-        "storybook": ["YOUR_STORYBOOK_SITE_ID"]
+        "landing": ["fillament-landing"],
+        "storybook": ["fillament-storybook"]
       }
     }
   },
