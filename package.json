@@ -39,7 +39,8 @@
     "deploy-storybook:preview": "pnpm build-storybook && firebase hosting:channel:deploy preview --only storybook",
     "changeset": "changeset",
     "version-packages": "changeset version && pnpm install --lockfile-only",
-    "release": "pnpm build && changeset publish",
+    "release": "changeset publish",
+    "release:local": "pnpm build && pnpm test && changeset publish",
     "clean": "pnpm -r exec rm -rf dist node_modules .turbo"
   },
   "devDependencies": {

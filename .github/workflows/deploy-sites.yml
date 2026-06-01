@@ -48,7 +48,7 @@ jobs:
       - name: Build landing
         env:
           VITE_STORYBOOK_URL: ${{ vars.STORYBOOK_URL }}
-          VITE_GITHUB_URL: https://github.com/headlessButSmart/fillament
+          VITE_GITHUB_URL: ${{ vars.GITHUB_PUBLIC_URL }}
         run: pnpm build-landing
 
       - name: Build Storybook
@@ -74,6 +74,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
+      - name: Verify required configuration is present
+        run: |
+          if [ -z "${{ vars.FIREBASE_PROJECT_ID }}" ]; then
+            echo "::error::Missing GitHub repo variable FIREBASE_PROJECT_ID."
+            echo "Set it at: Settings → Secrets and variables → Actions → Variables."
+            exit 1
+          fi
+          if [ -z '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' ]; then
+            echo "::error::Missing GitHub repo secret FIREBASE_SERVICE_ACCOUNT."
+            echo "Generate a service-account JSON in the Firebase Console and paste it as a secret."
+            exit 1
+          fi
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
@@ -107,6 +119,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
+      - name: Verify required configuration is present
+        run: |
+          if [ -z "${{ vars.FIREBASE_PROJECT_ID }}" ]; then
+            echo "::error::Missing GitHub repo variable FIREBASE_PROJECT_ID."
+            exit 1
+          fi
+          if [ -z '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' ]; then
+            echo "::error::Missing GitHub repo secret FIREBASE_SERVICE_ACCOUNT."
+            exit 1
+          fi
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
