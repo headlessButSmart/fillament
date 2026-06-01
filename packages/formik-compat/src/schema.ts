@@ -34,7 +34,7 @@ function isLikelyYupError(err: unknown): boolean {
 function yupToAdapter(schema: any): ValidationAdapter<any> {
   return {
     type: "yup",
-    async validate(values) {
+    async validate(values: unknown) {
       try {
         await schema.validate(values, { abortEarly: false });
         return { valid: true, errors: {} };
@@ -66,7 +66,7 @@ function yupToAdapter(schema: any): ValidationAdapter<any> {
 function zodToAdapter(schema: any): ValidationAdapter<any> {
   return {
     type: "zod",
-    async validate(values) {
+    async validate(values: unknown) {
       const result = await schema.safeParseAsync(values);
       if (result.success) return { valid: true, errors: {} };
       const issues = (result.error?.errors ?? []) as Array<{ path: (string | number)[]; message: string; code?: string }>;

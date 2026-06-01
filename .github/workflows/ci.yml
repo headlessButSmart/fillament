@@ -32,11 +32,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Typecheck
-        run: pnpm typecheck
-
+      # Build first — typechecking and tests both rely on each workspace's
+      # generated dist/*.d.ts, since cross-package imports (e.g. @fillament/zod
+      # importing types from @fillament/core) resolve through the package.json
+      # `types` field. tsup writes those declarations.
       - name: Build packages
         run: pnpm build
+
+      - name: Typecheck
+        run: pnpm typecheck
 
       - name: Run tests
         run: pnpm test

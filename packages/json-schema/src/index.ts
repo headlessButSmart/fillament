@@ -107,7 +107,7 @@ export function jsonSchemaAdapter<TValues = unknown>(
         formErrors,
       };
     },
-    async validateField(name, _value, values): Promise<FieldValidationResult> {
+    async validateField(name: string, _value: unknown, values: unknown): Promise<FieldValidationResult> {
       const valid = validateFn(values);
       if (valid) return { valid: true, errors: [] };
       const { fields } = aggregate(validateFn.errors ?? []);

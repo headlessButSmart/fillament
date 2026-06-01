@@ -79,7 +79,7 @@ export function yupAdapter<TValues = unknown>(schema: YupSchema): ValidationAdap
         return { valid: false, errors: fields, formErrors };
       }
     },
-    async validateField(name, _value, values): Promise<FieldValidationResult> {
+    async validateField(name: string, _value: unknown, values: unknown): Promise<FieldValidationResult> {
       if (schema.validateAt) {
         try {
           await schema.validateAt(name, values, { abortEarly: false });

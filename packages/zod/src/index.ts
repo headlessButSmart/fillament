@@ -61,7 +61,7 @@ export function zodAdapter<TSchema extends AnyZodSchema>(
         errors: issuesToErrors(issues),
       };
     },
-    async validateField(name, value, values): Promise<FieldValidationResult> {
+    async validateField(name: string, value: unknown, values: unknown): Promise<FieldValidationResult> {
       // For top-level fields, prefer schema.pick if available. Otherwise run full
       // validate and slice out errors for this path.
       const top = name.split(".")[0]!;
