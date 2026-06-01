@@ -49,5 +49,5 @@ jobs:
           # These are GitHub Actions Variables (repo Settings → Variables),
           # NOT secrets. If unset, the landing falls back to localhost defaults.
           VITE_STORYBOOK_URL: ${{ vars.STORYBOOK_URL }}
-          VITE_GITHUB_URL: ${{ vars.GITHUB_PUBLIC_URL }}
+          VITE_GITHUB_URL: ${{ vars.REPO_PUBLIC_URL }}
         run: pnpm build-landing

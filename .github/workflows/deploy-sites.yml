@@ -48,7 +48,7 @@ jobs:
       - name: Build landing
         env:
           VITE_STORYBOOK_URL: ${{ vars.STORYBOOK_URL }}
-          VITE_GITHUB_URL: ${{ vars.GITHUB_PUBLIC_URL }}
+          VITE_GITHUB_URL: ${{ vars.REPO_PUBLIC_URL }}
         run: pnpm build-landing
 
       - name: Build Storybook
