@@ -1,0 +1,135 @@
+name: Deploy sites
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/landing/**"
+      - "apps/storybook/**"
+      - "packages/**"
+      - "firebase.json"
+      - ".firebaserc"
+      - ".github/workflows/deploy-sites.yml"
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "apps/landing/**"
+      - "apps/storybook/**"
+      - "packages/**"
+      - "firebase.json"
+
+concurrency:
+  group: deploy-sites-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write   # to post PR-preview URLs as comments
+
+jobs:
+  build:
+    name: Build landing + storybook
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with: { version: 9 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: pnpm }
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build workspace packages
+        run: pnpm build
+
+      - name: Build landing
+        env:
+          VITE_STORYBOOK_URL: ${{ vars.STORYBOOK_URL }}
+          VITE_GITHUB_URL: https://github.com/headlessButSmart/fillament
+        run: pnpm build-landing
+
+      - name: Build Storybook
+        run: pnpm build-storybook
+
+      - name: Upload landing artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: landing-dist
+          path: apps/landing/dist
+          retention-days: 3
+
+      - name: Upload Storybook artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-dist
+          path: apps/storybook/storybook-static
+          retention-days: 3
+
+  deploy-landing:
+    name: Deploy landing
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: landing-dist
+          path: apps/landing/dist
+
+      - name: Deploy preview channel (PR)
+        if: github.event_name == 'pull_request'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          projectId: "${{ vars.FIREBASE_PROJECT_ID }}"
+          target: landing
+          expires: 14d
+          channelId: "pr-${{ github.event.pull_request.number }}-landing"
+
+      - name: Deploy live channel (main)
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          projectId: "${{ vars.FIREBASE_PROJECT_ID }}"
+          target: landing
+          channelId: live
+
+  deploy-storybook:
+    name: Deploy Storybook
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: storybook-dist
+          path: apps/storybook/storybook-static
+
+      - name: Deploy preview channel (PR)
+        if: github.event_name == 'pull_request'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          projectId: "${{ vars.FIREBASE_PROJECT_ID }}"
+          target: storybook
+          expires: 14d
+          channelId: "pr-${{ github.event.pull_request.number }}-storybook"
+
+      - name: Deploy live channel (main)
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          projectId: "${{ vars.FIREBASE_PROJECT_ID }}"
+          target: storybook
+          channelId: live

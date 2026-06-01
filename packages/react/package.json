@@ -1,0 +1,67 @@
+{
+  "name": "@fillament/react",
+  "version": "0.1.0",
+  "description": "React bindings for Fillament — useForm, Form, Field, FieldArray, FieldsRenderer, hooks.",
+  "license": "MIT",
+  "author": "headlessButSmart",
+  "homepage": "https://github.com/headlessButSmart/fillament/tree/main/packages/react#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/headlessButSmart/fillament.git",
+    "directory": "packages/react"
+  },
+  "bugs": {
+    "url": "https://github.com/headlessButSmart/fillament/issues"
+  },
+  "keywords": [
+    "fillament",
+    "form",
+    "forms",
+    "react",
+    "react-hooks",
+    "validation",
+    "typescript",
+    "formik-alternative"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": ["dist", "src", "README.md", "LICENSE"],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "dependencies": {
+    "@fillament/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^14.2.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "jsdom": "^24.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.4.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

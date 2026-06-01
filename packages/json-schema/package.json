@@ -1,0 +1,47 @@
+{
+  "name": "@fillament/json-schema",
+  "version": "0.1.0",
+  "description": "JSON Schema validation adapter for Fillament — AJV-backed, with ajv-formats.",
+  "license": "MIT",
+  "author": "headlessButSmart",
+  "homepage": "https://github.com/headlessButSmart/fillament/tree/main/packages/json-schema#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/headlessButSmart/fillament.git",
+    "directory": "packages/json-schema"
+  },
+  "bugs": {
+    "url": "https://github.com/headlessButSmart/fillament/issues"
+  },
+  "keywords": ["fillament", "json-schema", "ajv", "validation", "form", "adapter"],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": ["dist", "src", "README.md", "LICENSE"],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fillament/core": "workspace:*",
+    "ajv": "^8.12.0",
+    "ajv-formats": "^3.0.1"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.4.0"
+  },
+  "publishConfig": { "access": "public" }
+}

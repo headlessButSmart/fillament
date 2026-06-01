@@ -1,0 +1,40 @@
+{
+  "name": "@fillament/storybook",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "storybook dev -p 6006 --no-open",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "dependencies": {
+    "@fillament/ai": "workspace:*",
+    "@fillament/analytics": "workspace:*",
+    "@fillament/core": "workspace:*",
+    "@fillament/devtools": "workspace:*",
+    "@fillament/formik-compat": "workspace:*",
+    "@fillament/json-schema": "workspace:*",
+    "@fillament/react": "workspace:*",
+    "@fillament/yup": "workspace:*",
+    "@fillament/zod": "workspace:*",
+    "@mlc-ai/web-llm": "^0.2.79",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "yup": "^1.4.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^8.0.0",
+    "@storybook/addon-interactions": "^8.0.0",
+    "@storybook/blocks": "^8.0.0",
+    "@storybook/react": "^8.0.0",
+    "@storybook/react-vite": "^8.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "storybook": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vite": "^5.2.0"
+  }
+}

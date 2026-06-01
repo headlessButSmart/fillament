@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "YOUR_FIREBASE_PROJECT_ID"
+  },
+  "targets": {
+    "YOUR_FIREBASE_PROJECT_ID": {
+      "hosting": {
+        "landing": ["YOUR_LANDING_SITE_ID"],
+        "storybook": ["YOUR_STORYBOOK_SITE_ID"]
+      }
+    }
+  },
+  "etags": {}
+}

@@ -1,0 +1,60 @@
+{
+  "name": "@fillament/ai",
+  "version": "0.1.0",
+  "description": "In-browser AI assist for Fillament forms — WebLLM-powered, schema-aware, privacy-safe.",
+  "license": "MIT",
+  "author": "headlessButSmart",
+  "homepage": "https://github.com/headlessButSmart/fillament/tree/main/packages/ai#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/headlessButSmart/fillament.git",
+    "directory": "packages/ai"
+  },
+  "bugs": {
+    "url": "https://github.com/headlessButSmart/fillament/issues"
+  },
+  "keywords": ["fillament", "ai", "webllm", "form", "autofill", "assistant", "llm", "react"],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": ["dist", "src", "README.md", "LICENSE"],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "@mlc-ai/web-llm": ">=0.2.46"
+  },
+  "peerDependenciesMeta": {
+    "@mlc-ai/web-llm": { "optional": true }
+  },
+  "dependencies": {
+    "@fillament/core": "workspace:*",
+    "@fillament/react": "workspace:*"
+  },
+  "devDependencies": {
+    "@mlc-ai/web-llm": "^0.2.79",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.4.0",
+    "zod": "^3.22.0"
+  },
+  "publishConfig": { "access": "public" }
+}

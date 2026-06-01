@@ -1,0 +1,67 @@
+{
+  "name": "fillament",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Type-safe forms for complex React flows.",
+  "license": "MIT",
+  "author": "headlessButSmart",
+  "homepage": "https://github.com/headlessButSmart/fillament#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/headlessButSmart/fillament.git"
+  },
+  "bugs": {
+    "url": "https://github.com/headlessButSmart/fillament/issues"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "workspaces": [
+    "packages/*",
+    "examples/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "pnpm -r --filter \"./packages/*\" run build",
+    "dev": "pnpm -r --parallel --filter \"./packages/*\" --filter \"./apps/*\" run dev",
+    "dev:packages": "pnpm -r --parallel --filter \"./packages/*\" run dev",
+    "dev:apps": "pnpm -r --parallel --filter \"./apps/*\" run dev",
+    "test": "pnpm -r --filter \"./packages/*\" run test",
+    "typecheck": "pnpm -r --filter \"./packages/*\" run typecheck",
+    "lint": "pnpm -r --filter \"./packages/*\" run lint",
+    "storybook": "pnpm --filter @fillament/storybook run storybook",
+    "build-storybook": "pnpm --filter @fillament/storybook run build-storybook",
+    "landing": "pnpm --filter @fillament/landing run dev:open",
+    "build-landing": "pnpm --filter @fillament/landing run build",
+    "preview-landing": "pnpm --filter @fillament/landing run preview",
+    "deploy-landing": "pnpm build-landing && firebase deploy --only hosting:landing",
+    "deploy-storybook": "pnpm build-storybook && firebase deploy --only hosting:storybook",
+    "deploy-sites": "pnpm build-landing && pnpm build-storybook && firebase deploy --only hosting",
+    "deploy-landing:preview": "pnpm build-landing && firebase hosting:channel:deploy preview --only landing",
+    "deploy-storybook:preview": "pnpm build-storybook && firebase hosting:channel:deploy preview --only storybook",
+    "changeset": "changeset",
+    "version-packages": "changeset version && pnpm install --lockfile-only",
+    "release": "pnpm build && changeset publish",
+    "clean": "pnpm -r exec rm -rf dist node_modules .turbo"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.0",
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "firebase-tools": "^13.20.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.4.0",
+    "@vitest/ui": "^1.4.0",
+    "jsdom": "^24.0.0",
+    "@testing-library/react": "^14.2.0",
+    "@testing-library/jest-dom": "^6.4.0",
+    "@testing-library/user-event": "^14.5.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "zod": "^3.22.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

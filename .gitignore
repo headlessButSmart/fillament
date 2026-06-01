@@ -1,0 +1,30 @@
+node_modules
+dist
+build
+.turbo
+.next
+storybook-static
+*.log
+.DS_Store
+coverage
+*.tsbuildinfo
+.env
+.env.local
+.env.*.local
+
+# Editor / IDE
+.vscode
+.idea
+.fleet
+*.swp
+*.swo
+
+# Local tooling caches
+.claude
+.cursor
+.aider*
+
+# Firebase
+.firebase
+firebase-debug.log
+firestore-debug.log

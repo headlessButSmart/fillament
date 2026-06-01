@@ -1,0 +1,25 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
+  "changelog": [
+    "@changesets/changelog-github",
+    { "repo": "headlessButSmart/fillament" }
+  ],
+  "commit": false,
+  "fixed": [],
+  "linked": [
+    [
+      "@fillament/core",
+      "@fillament/react",
+      "@fillament/zod",
+      "@fillament/yup",
+      "@fillament/json-schema",
+      "@fillament/devtools",
+      "@fillament/analytics",
+      "@fillament/formik-compat"
+    ]
+  ],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": ["@fillament/landing", "@fillament/storybook"]
+}
