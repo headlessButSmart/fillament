@@ -706,7 +706,7 @@ function Comparison() {
               <Row label="JSON Schema validation" v={["yes", "partial", "yes"]} />
               <Row label="Yup validation" v={["yes", "yes", "yes"]} />
               <Row label="Zod validation" v={["yes", "partial", "yes"]} />
-              <Row label="Free in-app DevTools" v={["yes", "no", "pay"]} />
+              <Row label="Free in-app DevTools" v={["yes", "no", "yes"]} />
               <Row label="Privacy-safe analytics" v={["yes", "no", "no"]} />
               <Row label="JSON-driven field rendering" v={["yes", "no", "partial"]} />
               <Row label="In-browser AI form fill" v={["yes", "no", "no"]} />
@@ -718,7 +718,6 @@ function Comparison() {
           <span><span className="yes">●</span> Supported</span>
           <span><span className="partial">●</span> Partial</span>
           <span><span className="no">●</span> Not supported</span>
-          <span><span className="pay">$</span> Paid</span>
         </div>
       </div>
     </section>
