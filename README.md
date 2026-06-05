@@ -29,7 +29,7 @@ A modern Formik alternative for large React teams. Type-safe field paths, granul
 | Field arrays with stable per-row keys across reorder | ✅ | ⚠️ | ✅ |
 | Spreadsheet-style array editing (`FieldArrayTable`) | ✅ | ❌ | ❌ |
 | Pluggable validation (Zod / Yup / JSON Schema / custom / inline) | ✅ | ⚠️ | ✅ |
-| Built-in DevTools panel (free) | ✅ | ❌ | 💲 |
+| Built-in DevTools panel (free) | ✅ | ❌ | ✅ |
 | Privacy-safe analytics (free) | ✅ | ❌ | ❌ |
 | JSON-driven dynamic field rendering | ✅ | ❌ | ⚠️ |
 | Design-system component registry | ✅ | ⚠️ | ⚠️ |
