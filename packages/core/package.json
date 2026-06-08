@@ -1,6 +1,6 @@
 {
   "name": "@fillament/core",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Framework-agnostic form engine for Fillament — state, field registry, validation orchestration, subscriptions.",
   "license": "MIT",
   "author": "headlessButSmart",
@@ -33,7 +33,12 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist", "src", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "tsup",

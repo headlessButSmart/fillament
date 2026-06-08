@@ -1,6 +1,6 @@
 {
   "name": "@fillament/formik-compat",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Drop-in Formik compatibility layer for Fillament — swap one import, keep shipping.",
   "license": "MIT",
   "author": "headlessButSmart",
@@ -13,7 +13,15 @@
   "bugs": {
     "url": "https://github.com/headlessButSmart/fillament/issues"
   },
-  "keywords": ["fillament", "formik", "formik-compat", "migration", "react", "form", "compatibility"],
+  "keywords": [
+    "fillament",
+    "formik",
+    "formik-compat",
+    "migration",
+    "react",
+    "form",
+    "compatibility"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -25,7 +33,12 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist", "src", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "tsup",
@@ -53,5 +66,7 @@
     "vitest": "^1.4.0",
     "yup": "^1.4.0"
   },
-  "publishConfig": { "access": "public" }
+  "publishConfig": {
+    "access": "public"
+  }
 }
