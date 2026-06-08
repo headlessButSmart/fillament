@@ -20,6 +20,8 @@ export type { FormApi, FieldRegistration } from "./form.js";
 export { createFieldArray } from "./fieldArray.js";
 export type { FieldArrayApi, FieldArrayItem } from "./fieldArray.js";
 
+export type { FillamentPlugin, FillamentPluginContext } from "./plugin.js";
+
 export * from "./types.js";
 
 // Tiny helper for users who want to build their own adapter inline.

@@ -110,7 +110,23 @@ export type FormOptions<TValues> = {
   serverValidation?: ServerValidationOptions<TValues>;
   analytics?: unknown;
   devtools?: unknown;
+  // Optional plugin extension point used by @fillament/persist, @fillament/redux,
+  // and other optional modules. Plugins observe lifecycle events but never alter
+  // existing core behavior — see plugin.ts for the interface.
+  plugins?: ReadonlyArray<unknown>;
 };
+
+// i18n-compatible message type. Optional modules (notably @fillament/i18n) may
+// resolve `{ key, values?, fallback? }` messages alongside plain strings. The
+// core itself does not perform resolution — this is an additive type alias so
+// the rest of the ecosystem can speak the same shape.
+export type FillamentMessage =
+  | string
+  | {
+      key: string;
+      values?: Record<string, unknown>;
+      fallback?: string;
+    };
 
 export type FieldOptions = {
   defaultValue?: unknown;
