@@ -1,6 +1,6 @@
 {
   "name": "@fillament/redux",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Optional Redux bridge for Fillament — mirror form state into an existing Redux store. Redux is an optional peer; nothing else in Fillament depends on it.",
   "license": "MIT",
   "author": "headlessButSmart",
@@ -13,7 +13,12 @@
   "bugs": {
     "url": "https://github.com/headlessButSmart/fillament/issues"
   },
-  "keywords": ["fillament", "form", "redux", "bridge"],
+  "keywords": [
+    "fillament",
+    "form",
+    "redux",
+    "bridge"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -25,7 +30,12 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist", "src", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "tsup",

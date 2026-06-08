@@ -1,6 +1,6 @@
 {
   "name": "@fillament/remote",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Async options, dependent lookups, and remote validation for Fillament — without forcing React Query, SWR, or Redux.",
   "license": "MIT",
   "author": "headlessButSmart",
@@ -13,7 +13,14 @@
   "bugs": {
     "url": "https://github.com/headlessButSmart/fillament/issues"
   },
-  "keywords": ["fillament", "form", "async", "options", "validation", "lookup"],
+  "keywords": [
+    "fillament",
+    "form",
+    "async",
+    "options",
+    "validation",
+    "lookup"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -25,7 +32,12 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist", "src", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "tsup",

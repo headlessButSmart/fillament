@@ -1,6 +1,6 @@
 {
   "name": "@fillament/persist",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Optional draft persistence for Fillament — localStorage, sessionStorage, and memory stores with debounce, migration, and sensitive-field exclusion.",
   "license": "MIT",
   "author": "headlessButSmart",
@@ -13,7 +13,14 @@
   "bugs": {
     "url": "https://github.com/headlessButSmart/fillament/issues"
   },
-  "keywords": ["fillament", "form", "persistence", "draft", "autosave", "localstorage"],
+  "keywords": [
+    "fillament",
+    "form",
+    "persistence",
+    "draft",
+    "autosave",
+    "localstorage"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -25,7 +32,12 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist", "src", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "tsup",

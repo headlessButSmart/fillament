@@ -1,6 +1,6 @@
 {
   "name": "@fillament/blueprints",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Starter form blueprints for Fillament — login, signup, contact, surveys, commerce, and onboarding flows.",
   "license": "MIT",
   "author": "headlessButSmart",
@@ -13,7 +13,13 @@
   "bugs": {
     "url": "https://github.com/headlessButSmart/fillament/issues"
   },
-  "keywords": ["fillament", "form", "blueprints", "starter", "templates"],
+  "keywords": [
+    "fillament",
+    "form",
+    "blueprints",
+    "starter",
+    "templates"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -50,7 +56,12 @@
       "require": "./dist/onboarding.cjs"
     }
   },
-  "files": ["dist", "src", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "tsup",
