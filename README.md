@@ -100,6 +100,29 @@ export function UserForm() {
 
 ---
 
+## Optional modules
+
+Fillament keeps advanced capabilities in optional, tree-shakeable modules. None of these are imported by `@fillament/core` or `@fillament/react` — your base bundle is unchanged until you `pnpm add` one of them.
+
+- [`@fillament/persist`](packages/persist) — auto-save and restore form drafts (localStorage / sessionStorage / memory). Sensitive fields are excluded by default.
+- [`@fillament/remote`](packages/remote) — async options, dependent lookups, and remote validation, with stale-result protection. No React Query or SWR dependency.
+- [`@fillament/i18n`](packages/i18n) — localized labels, placeholders, and validation messages. Plain strings or `{ key, fallback }` messages, with interpolation and locale switching.
+- [`@fillament/blueprints`](packages/blueprints) — starter form blueprints (login, signup, contact, surveys, commerce, onboarding). Payment fields are intentionally NOT raw card fields — wire a PCI-compliant provider (Stripe Elements, Paddle, Adyen).
+- [`@fillament/redux`](packages/redux) — optional Redux bridge for teams that already use Redux. Defaults to one-way (form → store), `values-only` mode.
+
+```ts
+// Each module is imported independently — pay only for what you use.
+import { createStoragePersistPlugin } from "@fillament/persist";
+import { remoteOptions, remoteValidation } from "@fillament/remote";
+import { createI18n } from "@fillament/i18n";
+import { loginBlueprint } from "@fillament/blueprints/auth";
+import { createReduxBridge } from "@fillament/redux";
+```
+
+See [docs/persist.md](docs/persist.md), [docs/remote.md](docs/remote.md), [docs/i18n.md](docs/i18n.md), [docs/blueprints.md](docs/blueprints.md), and [docs/redux.md](docs/redux.md) for details.
+
+---
+
 ## Features
 
 ### 🎯 Type-safe field paths

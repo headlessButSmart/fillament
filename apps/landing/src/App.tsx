@@ -175,6 +175,7 @@ export function App() {
       <ConditionalSection />
       <ArrayTableSection />
       <JsonFieldsSection />
+      <OptionalModulesSection />
       <UseCases />
       <Comparison />
       <MigrationBanner />
@@ -182,6 +183,196 @@ export function App() {
       <FinalCta />
       <Footer />
     </>
+  );
+}
+
+/* ---------------------------- Optional modules ---------------------------- */
+
+const OPTIONAL_MODULE_SAMPLES: Record<string, { filename: string; code: string }> = {
+  persist: {
+    filename: "with-persist.tsx",
+    code: `import { useForm } from "@fillament/react";
+import { createStoragePersistPlugin } from "@fillament/persist";
+
+const form = useForm({
+  schema,
+  defaultValues,
+  plugins: [
+    createStoragePersistPlugin({
+      key: "checkout",
+      version: 1,
+      debounceMs: 500,
+      restoreOnMount: true,
+      clearOnSubmit: true,
+    }),
+  ],
+});`,
+  },
+  remote: {
+    filename: "with-remote.tsx",
+    code: `import { remoteOptions, remoteValidation } from "@fillament/remote";
+
+const cityOptions = remoteOptions({
+  key: (ctx) => ["cities", ctx.values.country],
+  enabled: (ctx) => Boolean(ctx.values.country),
+  fetcher: async ({ values, signal }) =>
+    (await fetch(\`/api/cities?c=\${values.country}\`, { signal })).json(),
+});
+
+const validateEmail = remoteValidation({
+  debounceMs: 400,
+  fetcher: async ({ value, signal }) => {
+    const r = await fetch(\`/api/email-check?email=\${value}\`, { signal });
+    return (await r.json()).available ? undefined : "Email taken";
+  },
+});`,
+  },
+  i18n: {
+    filename: "with-i18n.tsx",
+    code: `import { createI18n } from "@fillament/i18n";
+
+const i18n = createI18n({
+  locale: "pt",
+  fallbackLocale: "en",
+  messages: {
+    en: { "user.email.label": "Email" },
+    pt: { "user.email.label": "Email", "user.email.required": "O email é obrigatório" },
+  },
+});
+
+<Field label={i18n.t({ key: "user.email.label", fallback: "Email" })} />`,
+  },
+  blueprints: {
+    filename: "with-blueprints.tsx",
+    code: `import { loginBlueprint, signupBlueprint } from "@fillament/blueprints/auth";
+import { addressBlueprint, orderBlueprint } from "@fillament/blueprints/commerce";
+import { npsSurveyBlueprint } from "@fillament/blueprints/survey";
+
+const login = loginBlueprint({ rememberMe: true, forgotPassword: true });
+
+const address = addressBlueprint({
+  includePhone: true,
+  labels: { fullName: "Recipient name" },
+});`,
+  },
+  redux: {
+    filename: "with-redux.tsx",
+    code: `import { createReduxBridge } from "@fillament/redux";
+
+const form = useForm({
+  schema,
+  plugins: [
+    createReduxBridge({
+      store,
+      slice: "checkoutForm",
+      mode: "values-only",
+      debounceMs: 100,
+    }),
+  ],
+});`,
+  },
+};
+
+const OPTIONAL_MODULE_CARDS: Array<{
+  name: keyof typeof OPTIONAL_MODULE_SAMPLES;
+  icon: string;
+  title: string;
+  body: string;
+}> = [
+  {
+    name: "persist",
+    icon: "↻",
+    title: "Persist — draft restore",
+    body: "Auto-save long forms to localStorage, sessionStorage, or memory. Sensitive fields (password, token, ssn, cvv) excluded by default. Version migrations built in.",
+  },
+  {
+    name: "remote",
+    icon: "⇄",
+    title: "Remote — async fields",
+    body: "Async options, dependent dropdowns, remote validation, remote default values. Stale-response protection. No React Query or SWR required.",
+  },
+  {
+    name: "i18n",
+    icon: "✦",
+    title: "I18n — localized messages",
+    body: "Plain strings or { key, fallback } messages, with interpolation, fallback locales, and live locale switching. Custom resolvers for intl / i18next / lingui.",
+  },
+  {
+    name: "blueprints",
+    icon: "▤",
+    title: "Blueprints — starter forms",
+    body: "Auth, contact, surveys, commerce, onboarding. Composable, override-friendly. Commerce blueprints intentionally omit raw card fields.",
+  },
+  {
+    name: "redux",
+    icon: "◇",
+    title: "Redux — optional bridge",
+    body: "Already on Redux? Mirror values, errors, or full state into a slice. One-way after hydration, debounced. Redux stays an optional peer.",
+  },
+];
+
+function OptionalModulesSection() {
+  const [tab, setTab] = useState<keyof typeof OPTIONAL_MODULE_SAMPLES>("persist");
+  const sample = OPTIONAL_MODULE_SAMPLES[tab];
+
+  return (
+    <section id="optional-modules">
+      <div className="container">
+        <div className="section-head">
+          <div className="eyebrow">Optional modules</div>
+          <h2 className="section-title">Add only what your form needs.</h2>
+          <p className="section-lede">
+            Fillament's optional modules give you draft persistence, async lookups, localized
+            messages, and production-ready form blueprints without bloating the core bundle.
+            Each module is independently importable and tree-shakeable.
+          </p>
+        </div>
+
+        <div className="features" style={{ marginBottom: 32 }}>
+          {OPTIONAL_MODULE_CARDS.map((c) => (
+            <article
+              className="feature"
+              key={c.name}
+              onClick={() => setTab(c.name)}
+              style={{ cursor: "pointer", outline: tab === c.name ? "2px solid var(--accent)" : undefined }}
+            >
+              <div className="feature-icon">{c.icon}</div>
+              <h3>{c.title}</h3>
+              <p>{c.body}</p>
+              <code style={{
+                display: "inline-block",
+                marginTop: 10,
+                fontSize: 12,
+                color: "var(--fg-tertiary)",
+                fontFamily: "var(--font-mono)",
+              }}>
+                @fillament/{c.name}
+              </code>
+            </article>
+          ))}
+        </div>
+
+        <div className="tabs-bar" role="tablist">
+          {(Object.keys(OPTIONAL_MODULE_SAMPLES) as Array<keyof typeof OPTIONAL_MODULE_SAMPLES>).map((key) => (
+            <button
+              key={key}
+              role="tab"
+              aria-selected={tab === key}
+              className={tab === key ? "active" : ""}
+              onClick={() => setTab(key)}
+            >
+              {key === "i18n" ? "I18n" : key[0]!.toUpperCase() + key.slice(1)}
+            </button>
+          ))}
+        </div>
+        <CodeWindow
+          filename={sample!.filename}
+          code={sample!.code}
+          tabs={[sample!.filename]}
+          active={sample!.filename}
+        />
+      </div>
+    </section>
   );
 }
 
@@ -200,6 +391,7 @@ function Nav() {
           <a href="#features">Features</a>
           <a href="#ai">AI Fill</a>
           <a href="#validation">Validation</a>
+          <a href="#optional-modules">Modules</a>
           <a href="#compare">Compare</a>
           <a href="#packages">Packages</a>
           <a
@@ -706,11 +898,20 @@ function Comparison() {
               <Row label="JSON Schema validation" v={["yes", "partial", "yes"]} />
               <Row label="Yup validation" v={["yes", "yes", "yes"]} />
               <Row label="Zod validation" v={["yes", "partial", "yes"]} />
-              <Row label="Free in-app DevTools" v={["yes", "no", "pay"]} />
+              <Row label="Free in-app DevTools" v={["yes", "no", "yes"]} />
               <Row label="Privacy-safe analytics" v={["yes", "no", "no"]} />
               <Row label="JSON-driven field rendering" v={["yes", "no", "partial"]} />
               <Row label="In-browser AI form fill" v={["yes", "no", "no"]} />
               <Row label="Formik drop-in compatibility" v={["yes", "—", "no"]} />
+              <tr className="compare-divider">
+                <td colSpan={4}>Optional modules</td>
+              </tr>
+              <Row label="Draft persistence with sensitive-field guard" v={["yes", "no", "no"]} />
+              <Row label="Async options / dependent selects (no React Query)" v={["yes", "no", "partial"]} />
+              <Row label="Remote validation with stale-response protection" v={["yes", "partial", "yes"]} />
+              <Row label="Localized labels & messages (i18n adapter)" v={["yes", "no", "no"]} />
+              <Row label="Starter form blueprints (login, signup, NPS, order…)" v={["yes", "no", "no"]} />
+              <Row label="Optional Redux bridge (peer dep, opt-in)" v={["yes", "no", "no"]} />
             </tbody>
           </table>
         </div>
@@ -718,7 +919,6 @@ function Comparison() {
           <span><span className="yes">●</span> Supported</span>
           <span><span className="partial">●</span> Partial</span>
           <span><span className="no">●</span> Not supported</span>
-          <span><span className="pay">$</span> Paid</span>
         </div>
       </div>
     </section>
@@ -800,6 +1000,11 @@ function Packages() {
     { name: "@fillament/analytics", desc: "Privacy-safe event protocol + adapters", size: "~1 KB", status: "free" },
     { name: "@fillament/formik-compat", desc: "Drop-in Formik replacement", size: "~4 KB", status: "ready" },
     { name: "@fillament/ai", desc: "In-browser AI form fill via WebLLM", size: "~5 KB †", status: "free" },
+    { name: "@fillament/persist", desc: "Draft auto-save & restore (localStorage / session / memory)", size: "~2 KB", status: "ready" },
+    { name: "@fillament/remote", desc: "Async options, dependent lookups, remote validation", size: "~3 KB", status: "ready" },
+    { name: "@fillament/i18n", desc: "Localized labels, fallbacks, interpolation", size: "~1 KB", status: "ready" },
+    { name: "@fillament/blueprints", desc: "Starter forms — login, signup, contact, surveys, commerce, onboarding", size: "~4 KB", status: "ready" },
+    { name: "@fillament/redux", desc: "Optional Redux bridge — for teams already on Redux", size: "~1 KB", status: "ready" },
     { name: "@fillament/codemod", desc: "npx codemod migrate-formik ./src", size: "—", status: "planned" },
   ];
 
@@ -894,6 +1099,7 @@ function Footer() {
               <li><a href="#ai">AI Fill</a></li>
               <li><a href="#packages">DevTools</a></li>
               <li><a href="#packages">Analytics</a></li>
+              <li><a href="#optional-modules">Optional modules</a></li>
             </ul>
           </div>
           <div>

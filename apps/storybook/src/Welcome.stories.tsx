@@ -30,6 +30,15 @@ export const Intro: Story = {
         <li><strong>Performance</strong> — granular subscriptions in a 100-field form</li>
         <li><strong>Wizard</strong> — multi-step with hidden-step preservation</li>
       </ul>
+      <h3>Optional modules</h3>
+      <p>Tree-shakeable add-ons — not loaded unless you import them.</p>
+      <ul>
+        <li><strong>Persist</strong> — draft restore via localStorage / sessionStorage / memory</li>
+        <li><strong>Remote</strong> — async options, dependent selects, remote validation</li>
+        <li><strong>I18n</strong> — localized labels and locale switching</li>
+        <li><strong>Blueprints</strong> — login, signup, order, and survey starters</li>
+        <li><strong>Redux</strong> — optional bridge for teams already on Redux</li>
+      </ul>
     </div>
   ),
 };

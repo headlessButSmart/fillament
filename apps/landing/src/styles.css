@@ -818,6 +818,17 @@ section.alt { background: var(--bg-subtle); }
   color: var(--accent);
   font-weight: 600;
 }
+.compare .compare-divider td {
+  background: var(--bg-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--fg-tertiary);
+  padding: 10px 20px;
+  text-align: left;
+}
+.compare .compare-divider:hover { background: var(--bg-subtle); }
 .compare .yes, .compare-legend .yes { color: var(--success); }
 .compare .no, .compare-legend .no { color: var(--fg-muted); }
 .compare .partial, .compare-legend .partial { color: var(--warning); }

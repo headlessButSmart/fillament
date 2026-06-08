@@ -6,6 +6,7 @@ import {
 } from "./path.js";
 import { PathEmitter, SimpleEmitter } from "./emitter.js";
 import { resolveVisibility, type VisibilityPredicate } from "./visibility.js";
+import type { FillamentPlugin, FillamentPluginContext } from "./plugin.js";
 import type {
   AnalyticsEvent,
   DevtoolsEvent,
@@ -320,6 +321,7 @@ export function createForm<TValues = any>(options: FormOptions<TValues> = {}): F
     emitDevtools({ type: "field:change", formId: id, field: path, timestamp: Date.now() });
     emitAnalyticsEvent({ type: "field_changed", field: path });
     notifyState();
+    notifyPluginsValuesChange();
 
     if (opts.shouldValidate || shouldValidateOn("change")) {
       void api_validateField(path);
@@ -332,6 +334,7 @@ export function createForm<TValues = any>(options: FormOptions<TValues> = {}): F
     applyVisibilityForAll();
     valueEmitter.emit("");
     notifyState();
+    notifyPluginsValuesChange();
     if (opts.shouldValidate) void api_validate();
   }
 
@@ -520,6 +523,7 @@ export function createForm<TValues = any>(options: FormOptions<TValues> = {}): F
       for (const fieldPath of Object.keys(next)) {
         emitAnalyticsEvent({ type: "field_error", field: fieldPath, errorCode: next[fieldPath]?.[0]?.code });
       }
+      if (!result.valid) notifyPluginsValidationError();
       return result;
     } finally {
       state.isValidating = false;
@@ -610,10 +614,12 @@ export function createForm<TValues = any>(options: FormOptions<TValues> = {}): F
       state.submittedAt = Date.now();
       success = true;
       emitAnalyticsEvent({ type: "form_submitted", durationMs: Date.now() - start });
+      notifyPluginsSubmitSuccess(state.values);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       state.formErrors = [...state.formErrors, { message: msg, type: "server" }];
       emitAnalyticsEvent({ type: "form_submit_failed", errorCode: "submit_threw" });
+      notifyPluginsSubmitError(err);
     } finally {
       state.isSubmitting = false;
       emitDevtools({
@@ -649,6 +655,72 @@ export function createForm<TValues = any>(options: FormOptions<TValues> = {}): F
     emitDevtools({ type: "form:reset", formId: id, timestamp: Date.now() });
     valueEmitter.emit("");
     notifyState();
+    notifyPluginsReset();
+  }
+
+  // Plugin wiring (additive — has no effect if `plugins` is undefined or empty).
+  // Plugins observe lifecycle events; they cannot prevent or rewrite them.
+  // `formApi` is referenced inside these helpers but only invoked once the
+  // literal below has been assigned, so the closure resolves correctly.
+  const rawPlugins = (options.plugins ?? []) as ReadonlyArray<FillamentPlugin<TValues>>;
+  const activePlugins: FillamentPlugin<TValues>[] = rawPlugins.filter(
+    (p): p is FillamentPlugin<TValues> => !!p && typeof p === "object"
+  );
+
+  function pluginCtx(): FillamentPluginContext<TValues> {
+    return { form: formApi, formId: id };
+  }
+
+  function safeRunPlugin(label: string, fn: () => void): void {
+    try {
+      fn();
+    } catch (err) {
+      if (typeof console !== "undefined") {
+        // eslint-disable-next-line no-console
+        console.warn(`[fillament] plugin ${label} threw`, err);
+      }
+    }
+  }
+
+  function notifyPluginsValuesChange(): void {
+    if (activePlugins.length === 0) return;
+    const ctx = pluginCtx();
+    for (const p of activePlugins) {
+      if (p.onValuesChange) safeRunPlugin(p.name ?? "onValuesChange", () => p.onValuesChange!(state.values, ctx));
+    }
+  }
+
+  function notifyPluginsSubmitSuccess(values: TValues): void {
+    if (activePlugins.length === 0) return;
+    const ctx = pluginCtx();
+    for (const p of activePlugins) {
+      if (p.onSubmitSuccess) safeRunPlugin(p.name ?? "onSubmitSuccess", () => p.onSubmitSuccess!(values, ctx));
+    }
+  }
+
+  function notifyPluginsSubmitError(err: unknown): void {
+    if (activePlugins.length === 0) return;
+    const ctx = pluginCtx();
+    for (const p of activePlugins) {
+      if (p.onSubmitError) safeRunPlugin(p.name ?? "onSubmitError", () => p.onSubmitError!(err, ctx));
+    }
+  }
+
+  function notifyPluginsReset(): void {
+    if (activePlugins.length === 0) return;
+    const ctx = pluginCtx();
+    for (const p of activePlugins) {
+      if (p.onReset) safeRunPlugin(p.name ?? "onReset", () => p.onReset!(ctx));
+    }
+  }
+
+  function notifyPluginsValidationError(): void {
+    if (activePlugins.length === 0) return;
+    const ctx = pluginCtx();
+    const errs = state.errors;
+    for (const p of activePlugins) {
+      if (p.onValidationError) safeRunPlugin(p.name ?? "onValidationError", () => p.onValidationError!(errs, ctx));
+    }
   }
 
   emitDevtools({ type: "form:init", formId: id, timestamp: Date.now() });
@@ -691,6 +763,36 @@ export function createForm<TValues = any>(options: FormOptions<TValues> = {}): F
     get formState() {
       return state;
     },
+  };
+
+  // Fire plugin onInit hooks now that the public API is constructed. Returned
+  // cleanup functions are stored; consumers can dispose them via __disposePlugins.
+  const pluginCleanups: Array<() => void> = [];
+  if (activePlugins.length > 0) {
+    const ctx = pluginCtx();
+    for (const p of activePlugins) {
+      if (!p.onInit) continue;
+      try {
+        const cleanup = p.onInit(ctx);
+        if (typeof cleanup === "function") pluginCleanups.push(cleanup);
+      } catch (err) {
+        if (typeof console !== "undefined") {
+          // eslint-disable-next-line no-console
+          console.warn(`[fillament] plugin ${p.name ?? "onInit"} threw`, err);
+        }
+      }
+    }
+  }
+
+  // Internal escape hatch for environments that need to fire plugin teardown
+  // (e.g. component unmount in @fillament/react). Hidden from the public type to
+  // keep the API surface unchanged.
+  (formApi as unknown as { __disposePlugins: () => void }).__disposePlugins = () => {
+    while (pluginCleanups.length) {
+      const fn = pluginCleanups.pop();
+      if (!fn) continue;
+      try { fn(); } catch { /* swallow — teardown must never throw */ }
+    }
   };
 
   return formApi;

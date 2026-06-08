@@ -15,6 +15,16 @@ export function useForm<TValues = any>(options: FormOptions<TValues> = {}): Form
   (form.options as FormOptions<TValues>).onSubmit =
     options.onSubmit ?? form.options.onSubmit;
 
+  // Tear down any plugin cleanups when the host component unmounts. The
+  // __disposePlugins escape hatch is provided by createForm when plugins are
+  // wired; calling it on a plugin-less form is a no-op.
+  useEffect(() => {
+    return () => {
+      const dispose = (form as unknown as { __disposePlugins?: () => void }).__disposePlugins;
+      if (typeof dispose === "function") dispose();
+    };
+  }, [form]);
+
   return form;
 }
 

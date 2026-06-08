@@ -114,6 +114,9 @@ importers:
       '@fillament/analytics':
         specifier: workspace:*
         version: link:../../packages/analytics
+      '@fillament/blueprints':
+        specifier: workspace:*
+        version: link:../../packages/blueprints
       '@fillament/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -123,12 +126,24 @@ importers:
       '@fillament/formik-compat':
         specifier: workspace:*
         version: link:../../packages/formik-compat
+      '@fillament/i18n':
+        specifier: workspace:*
+        version: link:../../packages/i18n
       '@fillament/json-schema':
         specifier: workspace:*
         version: link:../../packages/json-schema
+      '@fillament/persist':
+        specifier: workspace:*
+        version: link:../../packages/persist
       '@fillament/react':
         specifier: workspace:*
         version: link:../../packages/react
+      '@fillament/redux':
+        specifier: workspace:*
+        version: link:../../packages/redux
+      '@fillament/remote':
+        specifier: workspace:*
+        version: link:../../packages/remote
       '@fillament/yup':
         specifier: workspace:*
         version: link:../../packages/yup
@@ -238,6 +253,22 @@ importers:
         specifier: ^1.4.0
         version: 1.6.1(@types/node@20.19.41)(@vitest/ui@1.6.1)(jsdom@24.1.3)
 
+  packages/blueprints:
+    dependencies:
+      '@fillament/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      tsup:
+        specifier: ^8.0.0
+        version: 8.5.1(postcss@8.5.15)(typescript@5.9.3)(yaml@2.9.0)
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+      vitest:
+        specifier: ^1.4.0
+        version: 1.6.1(@types/node@20.19.41)(@vitest/ui@1.6.1)(jsdom@24.1.3)
+
   packages/core:
     devDependencies:
       tsup:
@@ -318,6 +349,22 @@ importers:
         specifier: ^1.4.0
         version: 1.7.1
 
+  packages/i18n:
+    dependencies:
+      '@fillament/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      tsup:
+        specifier: ^8.0.0
+        version: 8.5.1(postcss@8.5.15)(typescript@5.9.3)(yaml@2.9.0)
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+      vitest:
+        specifier: ^1.4.0
+        version: 1.6.1(@types/node@20.19.41)(@vitest/ui@1.6.1)(jsdom@24.1.3)
+
   packages/json-schema:
     dependencies:
       '@fillament/core':
@@ -329,6 +376,22 @@ importers:
       ajv-formats:
         specifier: ^3.0.1
         version: 3.0.1(ajv@8.20.0)
+    devDependencies:
+      tsup:
+        specifier: ^8.0.0
+        version: 8.5.1(postcss@8.5.15)(typescript@5.9.3)(yaml@2.9.0)
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+      vitest:
+        specifier: ^1.4.0
+        version: 1.6.1(@types/node@20.19.41)(@vitest/ui@1.6.1)(jsdom@24.1.3)
+
+  packages/persist:
+    dependencies:
+      '@fillament/core':
+        specifier: workspace:*
+        version: link:../core
     devDependencies:
       tsup:
         specifier: ^8.0.0
@@ -364,6 +427,38 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
+      tsup:
+        specifier: ^8.0.0
+        version: 8.5.1(postcss@8.5.15)(typescript@5.9.3)(yaml@2.9.0)
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+      vitest:
+        specifier: ^1.4.0
+        version: 1.6.1(@types/node@20.19.41)(@vitest/ui@1.6.1)(jsdom@24.1.3)
+
+  packages/redux:
+    dependencies:
+      '@fillament/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      tsup:
+        specifier: ^8.0.0
+        version: 8.5.1(postcss@8.5.15)(typescript@5.9.3)(yaml@2.9.0)
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+      vitest:
+        specifier: ^1.4.0
+        version: 1.6.1(@types/node@20.19.41)(@vitest/ui@1.6.1)(jsdom@24.1.3)
+
+  packages/remote:
+    dependencies:
+      '@fillament/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
       tsup:
         specifier: ^8.0.0
         version: 8.5.1(postcss@8.5.15)(typescript@5.9.3)(yaml@2.9.0)
