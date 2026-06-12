@@ -35,6 +35,7 @@ const form = useForm({
 | `zodAdapter(schema)` | factory | Returns a `ValidationAdapter` for the given Zod schema. |
 | `isZodSchemaInput(value)` | helper | True if `value` looks like a Zod schema (has `safeParseAsync`). |
 | `resolveSchema(value)` | helper | Auto-detect Zod or pre-built Fillament adapter. Returns `undefined` for anything else. |
+| `zodToJsonSchema(schema)` | helper | Convert a Zod schema to JSON Schema — what `introspect()` uses. |
 | `z` | re-export | Re-exported from `zod` for convenience (`import { z } from "@fillament/zod"`). |
 
 ---
@@ -50,8 +51,13 @@ Returns:
   type: "zod",
   validate: (values) => Promise<ValidationResult>,
   validateField: (name, value, values) => Promise<FieldValidationResult>,
+  introspect: () => Record<string, unknown>, // JSON Schema
 }
 ```
+
+### Introspection
+
+`introspect()` walks the Zod schema into a JSON Schema description — types, `required`, formats (`email`/`uri`/`uuid`/`date-time`), enums, literals, string/number/array bounds, and `.describe()` texts all carry over. Optional modules use this to discover the form's shape: [`@fillament/webmcp`](https://github.com/headlessButSmart/fillament/tree/main/packages/webmcp) publishes it to AI agents as a tool schema, and [`@fillament/test-data`](https://github.com/headlessButSmart/fillament/tree/main/packages/test-data) generates fixtures from it. The walker is structural (reads `_def`), never imports zod at runtime, and degrades to permissive `{}` nodes for exotic types.
 
 ### Error mapping
 

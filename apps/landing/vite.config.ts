@@ -5,5 +5,5 @@ export default defineConfig({
   plugins: [react()],
   // `open: false` so `pnpm dev` (multi-process) doesn't pop multiple browser
   // windows. Use `pnpm landing` directly if you want it to open on launch.
-  server: { port: 5173, open: false },
+  server: { port: Number(process.env.PORT) || 5173, open: false },
 });

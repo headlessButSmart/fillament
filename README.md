@@ -6,7 +6,7 @@
 
 A modern Formik alternative for large React teams. Type-safe field paths, granular re-renders, first-class conditional flows, built-in DevTools, privacy-safe analytics, a drop-in Formik compatibility layer — and now **in-browser AI form fill** that never leaks data to a server.
 
-[![Tests](https://img.shields.io/badge/tests-68%2F68-brightgreen)]()
+[![Tests](https://img.shields.io/badge/tests-218%2F218-brightgreen)]()
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue)]()
 [![License](https://img.shields.io/badge/license-MIT-blue)]()
 [![Free DevTools](https://img.shields.io/badge/DevTools-free-success)]()
@@ -47,7 +47,12 @@ pnpm add @fillament/react @fillament/zod @fillament/devtools
 # pick whichever validators you need:
 pnpm add @fillament/json-schema    # JSON Schema (AJV)
 pnpm add @fillament/analytics      # privacy-safe analytics
+
+# …or grab everything at once with the mega package:
+pnpm add @fillament/mega           # batteries included — zod, yup, AJV, WebLLM, MCP bridge all bundled
 ```
+
+> **Want it all?** [`@fillament/mega`](packages/mega) is the fat package: every Fillament module re-exported behind tree-shakable subpath entries (`@fillament/mega/zod`, `/persist`, …), with Zod, Yup, AJV, the WebLLM engine, and the MCP bridge bundled as dependencies. The root entry combines core + React bindings — `import { useForm, Form, Field } from "@fillament/mega"`. Your bundler still tree-shakes whatever you don't import.
 
 ```tsx
 import { z } from "zod";
@@ -87,6 +92,7 @@ export function UserForm() {
 
 | Package | Description | Status |
 | --- | --- | :---: |
+| [`@fillament/mega`](packages/mega) | **Everything in one install** — all packages + validators bundled, re-exported via tree-shakable subpaths | ✅ |
 | [`@fillament/core`](packages/core) | Framework-agnostic form engine, field registry, validation orchestration | ✅ |
 | [`@fillament/react`](packages/react) | React bindings: `useForm`, `Form`, `Field`, `FieldArray`, `FieldArrayTable`, `FieldsRenderer` | ✅ |
 | [`@fillament/zod`](packages/zod) | Zod validation adapter | ✅ |
@@ -96,7 +102,6 @@ export function UserForm() {
 | [`@fillament/devtools`](packages/devtools) | In-app DevTools panel | ✅ |
 | [`@fillament/formik-compat`](packages/formik-compat) | Drop-in Formik compatibility layer | ✅ |
 | [`@fillament/ai`](packages/ai) | In-browser AI fill assist via WebLLM — schema-aware, privacy-safe | ✅ |
-| `@fillament/codemod` | `npx @fillament/codemod migrate-formik ./src` | 🛠️ planned |
 
 ---
 
@@ -109,6 +114,8 @@ Fillament keeps advanced capabilities in optional, tree-shakeable modules. None 
 - [`@fillament/i18n`](packages/i18n) — localized labels, placeholders, and validation messages. Plain strings or `{ key, fallback }` messages, with interpolation and locale switching.
 - [`@fillament/blueprints`](packages/blueprints) — starter form blueprints (login, signup, contact, surveys, commerce, onboarding). Payment fields are intentionally NOT raw card fields — wire a PCI-compliant provider (Stripe Elements, Paddle, Adyen).
 - [`@fillament/redux`](packages/redux) — optional Redux bridge for teams that already use Redux. Defaults to one-way (form → store), `values-only` mode.
+- [`@fillament/webmcp`](packages/webmcp) — expose forms to in-browser AI agents as [WebMCP](https://github.com/webmachinelearning/webmcp) tools derived from the validation schema. Agents can read and fill; submit is off unless you enable it. Includes an [`@mcp-b/transports`](https://github.com/MiguelsPizza/WebMCP) bridge usable in today's browsers.
+- [`@fillament/test-data`](packages/test-data) — deterministic, schema-derived test data. `fillFormWithTestData(form, { seed })` for tests and stories, plus a one-click **🎲 Fill test data** button for the DevTools panel.
 
 ```ts
 // Each module is imported independently — pay only for what you use.
@@ -117,9 +124,11 @@ import { remoteOptions, remoteValidation } from "@fillament/remote";
 import { createI18n } from "@fillament/i18n";
 import { loginBlueprint } from "@fillament/blueprints/auth";
 import { createReduxBridge } from "@fillament/redux";
+import { webmcpPlugin } from "@fillament/webmcp";
+import { fillFormWithTestData } from "@fillament/test-data";
 ```
 
-See [docs/persist.md](docs/persist.md), [docs/remote.md](docs/remote.md), [docs/i18n.md](docs/i18n.md), [docs/blueprints.md](docs/blueprints.md), and [docs/redux.md](docs/redux.md) for details.
+See [docs/persist.md](docs/persist.md), [docs/remote.md](docs/remote.md), [docs/i18n.md](docs/i18n.md), [docs/blueprints.md](docs/blueprints.md), [docs/redux.md](docs/redux.md), [docs/webmcp.md](docs/webmcp.md), and [docs/test-data.md](docs/test-data.md) for details.
 
 ---
 
@@ -254,6 +263,47 @@ import { FillamentAI } from "@fillament/ai";
 - **Configurable** — `enabled`, `model`, `temperature`, `top_p`, `max_tokens`, `seed`, `systemPrompt`, `position`, `includeCurrentValues`, custom `onProgress`
 - **Tree-shakable** — `@mlc-ai/web-llm` is an optional peer dep loaded with dynamic `import()`; users who don't render `FillamentAI` pay zero bundle cost
 
+### 🌐 Forms as agent tools — `@fillament/webmcp`
+
+Expose any form to in-browser AI agents as [WebMCP](https://github.com/webmachinelearning/webmcp) tools. The tool schemas come straight from your validation schema — the agent reads state, fills fields (validation runs for real), and only submits if you allow it.
+
+```tsx
+import { webmcpPlugin } from "@fillament/webmcp";
+
+const form = useForm({
+  schema: zodAdapter(CheckoutSchema),
+  plugins: [
+    webmcpPlugin({
+      name: "checkout",
+      description: "Checkout form for the user's current cart.",
+      // expose: { submit: true },          // off by default
+      // confirmSubmit: askTheUser,         // human-in-the-loop gate
+    }),
+  ],
+});
+```
+
+- **Schema-derived** — `_fill`'s inputSchema is your zod/yup/JSON schema via `introspect()`
+- **Safe defaults** — submit tool disabled unless opted in; sensitive values (`password`, `card`, `ssn`, …) redacted from reads
+- **Usable today** — `@fillament/webmcp/mcp-b` runs an in-page MCP server over [`@mcp-b/transports`](https://github.com/MiguelsPizza/WebMCP) (optional peers, dynamic import)
+- **Future-proof** — main entry targets the W3C `navigator.modelContext` API and no-ops where it's missing
+
+### 🎲 Schema-derived test data — `@fillament/test-data`
+
+Fill any form with realistic, deterministic data derived from its validation schema — formats, enums, and min/max respected, names like `email`/`createdAt`/`isActive` get matching values.
+
+```ts
+import { fillFormWithTestData } from "@fillament/test-data";
+
+fillFormWithTestData(form, { seed: 42, overrides: { email: "qa@test.dev" } });
+```
+
+```ts
+// One-click 🎲 button in the DevTools panel (dev builds):
+import { enableTestDataDevtools } from "@fillament/test-data/devtools";
+if (import.meta.env.DEV) enableTestDataDevtools();
+```
+
 ### 🎨 Design-system component registry
 
 ```tsx
@@ -307,7 +357,7 @@ import { FillamentDevTools } from "@fillament/devtools";
 <FillamentDevTools form={form} />
 ```
 
-A floating panel with tabs for **Overview, Values, Fields, Errors, Validation timing, Render counts, Analytics events, and DevTools events**. No browser extension required.
+A floating panel with tabs for **Overview, Values, Fields, Errors, Validation timing, Render counts, Analytics events, and DevTools events**. No browser extension required. Extensible with an action toolbar (`registerDevtoolsAction`) — used by `@fillament/test-data` for its one-click fill button.
 
 ### 🛡️ Privacy-safe analytics (free)
 
@@ -384,10 +434,10 @@ pnpm storybook    # opens http://localhost:6006
 
 ```bash
 pnpm install
-pnpm build          # build all 9 packages
-pnpm test           # 68/68 across 9 test suites
+pnpm build          # build all 17 packages
+pnpm test           # 218/218 across 17 packages
 pnpm typecheck      # tsc on every package
-pnpm storybook      # 16 interactive use-case stories at :6006
+pnpm storybook      # 25 interactive use-case stories at :6006
 pnpm landing        # marketing landing page at :5173
 ```
 
@@ -415,7 +465,15 @@ fillament/
 │   ├── analytics/         # free privacy-safe analytics
 │   ├── devtools/          # free in-app inspector
 │   ├── formik-compat/     # drop-in Formik compatibility layer
-│   └── ai/                # in-browser AI fill assist (WebLLM)
+│   ├── ai/                # in-browser AI fill assist (WebLLM)
+│   ├── persist/           # draft auto-save & restore
+│   ├── remote/            # async options + remote validation
+│   ├── i18n/              # localized labels & messages
+│   ├── blueprints/        # starter form blueprints
+│   ├── redux/             # optional Redux bridge
+│   ├── webmcp/            # forms as WebMCP tools for in-browser agents
+│   ├── test-data/         # schema-derived deterministic test data
+│   └── mega/              # everything in one install (thin re-exports)
 ├── apps/
 │   ├── storybook/         # interactive use-case stories
 │   └── landing/           # marketing site
@@ -432,11 +490,10 @@ fillament/
 - Free DevTools + free privacy-safe analytics
 - `@fillament/formik-compat` drop-in (render-prop `<Formik>`, `useFormik`, `<Field>`, `<ErrorMessage>`)
 - `@fillament/ai` — in-browser AI form fill via WebLLM
-- Landing page + Storybook with 16 use-case stories
-- 68/68 tests across 9 packages
+- Landing page + Storybook with 25 use-case stories
+- 218/218 tests across 17 packages
 
 **v0.2 — next**
-- `@fillament/codemod` Formik migration CLI
 - Browser extension version of DevTools
 - Cloud-LLM adapter for `@fillament/ai` (OpenAI / Anthropic / Ollama) — same UI, opt-in
 - React Native + Vue bindings (exploratory)

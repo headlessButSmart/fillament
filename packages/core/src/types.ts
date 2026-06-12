@@ -28,6 +28,10 @@ export type ValidationAdapter<TValues = any> = {
     value: unknown,
     values: TValues
   ) => Promise<FieldValidationResult>;
+  // Optional, additive. Returns a JSON Schema description of the values shape so
+  // optional modules (@fillament/webmcp, @fillament/test-data, ...) can discover
+  // fields, types, and constraints without depending on the validation library.
+  introspect?: () => Record<string, unknown>;
 };
 
 export type ValidateOn = "change" | "blur" | "submit" | "mount";

@@ -1,0 +1,202 @@
+{
+  "name": "@fillament/mega",
+  "version": "0.1.0",
+  "description": "Everything Fillament in one install — all packages re-exported behind tree-shakable subpath entries, with Zod, Yup, the WebLLM engine, and the MCP bridge bundled as dependencies. Just add React.",
+  "license": "MIT",
+  "author": "headlessButSmart",
+  "homepage": "https://github.com/headlessButSmart/fillament/tree/main/packages/mega#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/headlessButSmart/fillament.git",
+    "directory": "packages/mega"
+  },
+  "bugs": {
+    "url": "https://github.com/headlessButSmart/fillament/issues"
+  },
+  "keywords": [
+    "fillament",
+    "form",
+    "forms",
+    "react",
+    "validation",
+    "zod",
+    "yup",
+    "json-schema",
+    "ai",
+    "webmcp",
+    "all-in-one"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/react.cjs"
+    },
+    "./zod": {
+      "types": "./dist/zod.d.ts",
+      "import": "./dist/zod.js",
+      "require": "./dist/zod.cjs"
+    },
+    "./yup": {
+      "types": "./dist/yup.d.ts",
+      "import": "./dist/yup.js",
+      "require": "./dist/yup.cjs"
+    },
+    "./json-schema": {
+      "types": "./dist/json-schema.d.ts",
+      "import": "./dist/json-schema.js",
+      "require": "./dist/json-schema.cjs"
+    },
+    "./ai": {
+      "types": "./dist/ai.d.ts",
+      "import": "./dist/ai.js",
+      "require": "./dist/ai.cjs"
+    },
+    "./webmcp": {
+      "types": "./dist/webmcp.d.ts",
+      "import": "./dist/webmcp.js",
+      "require": "./dist/webmcp.cjs"
+    },
+    "./webmcp/mcp-b": {
+      "types": "./dist/webmcp-mcp-b.d.ts",
+      "import": "./dist/webmcp-mcp-b.js",
+      "require": "./dist/webmcp-mcp-b.cjs"
+    },
+    "./blueprints": {
+      "types": "./dist/blueprints.d.ts",
+      "import": "./dist/blueprints.js",
+      "require": "./dist/blueprints.cjs"
+    },
+    "./blueprints/auth": {
+      "types": "./dist/blueprints-auth.d.ts",
+      "import": "./dist/blueprints-auth.js",
+      "require": "./dist/blueprints-auth.cjs"
+    },
+    "./blueprints/contact": {
+      "types": "./dist/blueprints-contact.d.ts",
+      "import": "./dist/blueprints-contact.js",
+      "require": "./dist/blueprints-contact.cjs"
+    },
+    "./blueprints/survey": {
+      "types": "./dist/blueprints-survey.d.ts",
+      "import": "./dist/blueprints-survey.js",
+      "require": "./dist/blueprints-survey.cjs"
+    },
+    "./blueprints/commerce": {
+      "types": "./dist/blueprints-commerce.d.ts",
+      "import": "./dist/blueprints-commerce.js",
+      "require": "./dist/blueprints-commerce.cjs"
+    },
+    "./blueprints/onboarding": {
+      "types": "./dist/blueprints-onboarding.d.ts",
+      "import": "./dist/blueprints-onboarding.js",
+      "require": "./dist/blueprints-onboarding.cjs"
+    },
+    "./test-data": {
+      "types": "./dist/test-data.d.ts",
+      "import": "./dist/test-data.js",
+      "require": "./dist/test-data.cjs"
+    },
+    "./test-data/devtools": {
+      "types": "./dist/test-data-devtools.d.ts",
+      "import": "./dist/test-data-devtools.js",
+      "require": "./dist/test-data-devtools.cjs"
+    },
+    "./persist": {
+      "types": "./dist/persist.d.ts",
+      "import": "./dist/persist.js",
+      "require": "./dist/persist.cjs"
+    },
+    "./remote": {
+      "types": "./dist/remote.d.ts",
+      "import": "./dist/remote.js",
+      "require": "./dist/remote.cjs"
+    },
+    "./redux": {
+      "types": "./dist/redux.d.ts",
+      "import": "./dist/redux.js",
+      "require": "./dist/redux.cjs"
+    },
+    "./i18n": {
+      "types": "./dist/i18n.d.ts",
+      "import": "./dist/i18n.js",
+      "require": "./dist/i18n.cjs"
+    },
+    "./analytics": {
+      "types": "./dist/analytics.d.ts",
+      "import": "./dist/analytics.js",
+      "require": "./dist/analytics.cjs"
+    },
+    "./devtools": {
+      "types": "./dist/devtools.d.ts",
+      "import": "./dist/devtools.js",
+      "require": "./dist/devtools.cjs"
+    },
+    "./formik-compat": {
+      "types": "./dist/formik-compat.d.ts",
+      "import": "./dist/formik-compat.js",
+      "require": "./dist/formik-compat.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fillament/ai": "workspace:*",
+    "@fillament/analytics": "workspace:*",
+    "@fillament/blueprints": "workspace:*",
+    "@fillament/core": "workspace:*",
+    "@fillament/devtools": "workspace:*",
+    "@fillament/formik-compat": "workspace:*",
+    "@fillament/i18n": "workspace:*",
+    "@fillament/json-schema": "workspace:*",
+    "@fillament/persist": "workspace:*",
+    "@fillament/react": "workspace:*",
+    "@fillament/redux": "workspace:*",
+    "@fillament/remote": "workspace:*",
+    "@fillament/test-data": "workspace:*",
+    "@fillament/webmcp": "workspace:*",
+    "@fillament/yup": "workspace:*",
+    "@fillament/zod": "workspace:*",
+    "@mcp-b/transports": "^3.0.0",
+    "@mlc-ai/web-llm": "^0.2.79",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "yup": "^1.4.0",
+    "zod": "^3.22.0"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.4.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

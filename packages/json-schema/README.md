@@ -47,6 +47,8 @@ const form = useForm({ schema: jsonSchemaAdapter(schema) });
 
 Returns a `ValidationAdapter<TValues>` with `type: "json-schema"`. Pass it directly as `useForm({ schema: jsonSchemaAdapter(s) })`.
 
+The adapter also implements `introspect()`, returning your schema verbatim. Optional modules use it to discover the form's shape — [`@fillament/webmcp`](https://github.com/headlessButSmart/fillament/tree/main/packages/webmcp) publishes it to AI agents as a tool schema, and [`@fillament/test-data`](https://github.com/headlessButSmart/fillament/tree/main/packages/test-data) generates fixtures from it. Since the schema *is* JSON Schema, this adapter gives those modules the highest-fidelity picture of any adapter.
+
 ---
 
 ## How errors are mapped

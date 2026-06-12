@@ -30,6 +30,7 @@ const form = useForm({ schema: yupAdapter(UserSchema) });
 | Export | Kind | Purpose |
 | --- | --- | --- |
 | `yupAdapter(schema)` | factory | Returns a `ValidationAdapter` for the given Yup schema. |
+| `yupToJsonSchema(schema)` | helper | Convert a Yup schema to JSON Schema via `schema.describe()` — what `introspect()` uses. |
 | `YupSchema` | type | The minimal structural shape we depend on (`validate`, optional `validateAt`). |
 
 ---
@@ -45,8 +46,13 @@ Returns:
   type: "yup",
   validate: (values) => Promise<ValidationResult>,
   validateField: (name, value, values) => Promise<FieldValidationResult>,
+  introspect: () => Record<string, unknown>, // JSON Schema, via schema.describe()
 }
 ```
+
+### Introspection
+
+`introspect()` converts the schema to JSON Schema using Yup's own `describe()` — types, `required()` tests, `oneOf` enums, min/max bounds, `email`/`url`/`uuid` formats, and `.label()` texts (as `description`) all carry over. Optional modules use this to discover the form's shape: [`@fillament/webmcp`](https://github.com/headlessButSmart/fillament/tree/main/packages/webmcp) publishes it to AI agents as a tool schema, and [`@fillament/test-data`](https://github.com/headlessButSmart/fillament/tree/main/packages/test-data) generates fixtures from it. Lazy/mixed nodes degrade to permissive `{}`.
 
 ### Error mapping
 

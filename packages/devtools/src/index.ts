@@ -6,3 +6,10 @@ export {
   listForms,
   subscribeFormRegistry,
 } from "./registry.js";
+
+export {
+  registerDevtoolsAction,
+  listDevtoolsActions,
+  subscribeDevtoolsActions,
+} from "./actions.js";
+export type { DevtoolsAction } from "./actions.js";

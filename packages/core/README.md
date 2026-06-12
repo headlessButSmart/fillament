@@ -32,6 +32,8 @@ For React, use [`@fillament/react`](https://github.com/headlessButSmart/fillamen
 | `createFormStore` | alias | Same as `createForm`. Provided for ecosystem ergonomics. |
 | `createFieldArray(form, name)` | factory | Build a `FieldArrayApi` for the array at `name`. |
 | `createValidationAdapter(validate, options?)` | helper | Wrap a `(values) => ValidationResult` function into an adapter. |
+| `introspectForm(form)` | helper | JSON Schema describing the form's values — adapter `introspect()` first, value inference as fallback. |
+| `inferJsonSchemaFromValues(values)` | helper | Permissive JSON Schema inferred from a plain values object. |
 
 ### Path utilities
 `getValueAtPath(obj, path)`, `setValueAtPath(obj, path, value)`, `deleteValueAtPath(obj, path)`, `hasPath(obj, path)`, `isEqual(a, b)`, `parsePath(path)`, `joinPath(segments)`, `isPathUnder(child, parent)`.
@@ -121,7 +123,9 @@ For React, use [`@fillament/react`](https://github.com/headlessButSmart/fillamen
 
 `ValidationResult<TValues>`: `{ valid: boolean; errors: Partial<Record<string, FormError[]>>; formErrors?: FormError[] }`.
 
-`ValidationAdapter<TValues>`: `{ type: string; validate(values): Promise<ValidationResult>; validateField?(name, value, values): Promise<FieldValidationResult> }`.
+`ValidationAdapter<TValues>`: `{ type: string; validate(values): Promise<ValidationResult>; validateField?(name, value, values): Promise<FieldValidationResult>; introspect?(): Record<string, unknown> }`.
+
+`introspect()` is optional and additive: adapters that implement it return a **JSON Schema** description of the values shape (the zod, yup, and json-schema adapters all do). Optional modules use it to discover fields, types, and constraints without depending on the validation library — see `introspectForm` below.
 
 `InlineValidate<TValues>` accepts the Formik-style flat map or a full `ValidationResult`. The engine normalizes either.
 
@@ -302,7 +306,26 @@ const adapter = createValidationAdapter(async (values) => {
 }, { type: "custom" });
 ```
 
-Pass it as `useForm({ schema: adapter })`. Provide a custom `validateField` in the options if you can validate one field at a time more cheaply.
+Pass it as `useForm({ schema: adapter })`. Provide a custom `validateField` in the options if you can validate one field at a time more cheaply. Add an `introspect: () => jsonSchema` member to make your adapter discoverable by `@fillament/webmcp` and `@fillament/test-data`.
+
+---
+
+## Schema introspection
+
+`introspectForm(form)` resolves a JSON Schema for the form's values:
+
+1. If `options.schema` is a `ValidationAdapter` implementing `introspect()`, that result wins.
+2. Otherwise a permissive schema is inferred from default + current values (types only, nothing `required`).
+3. Worst case it returns `{ type: "object", properties: {} }` — callers can always treat the result as an object schema.
+
+```ts
+import { introspectForm } from "@fillament/core";
+
+const jsonSchema = introspectForm(form);
+// → { type: "object", required: ["email"], properties: { email: { type: "string", format: "email" }, … } }
+```
+
+This is the contract behind [`@fillament/webmcp`](https://www.npmjs.com/package/@fillament/webmcp) (forms as AI-agent tools) and [`@fillament/test-data`](https://www.npmjs.com/package/@fillament/test-data) (generated fixtures). `inferJsonSchemaFromValues(values)` — step 2 — is exported separately for reuse.
 
 ---
 
@@ -315,6 +338,8 @@ The base engine is small and uncoupled. Add only what you need:
 - [`@fillament/i18n`](https://www.npmjs.com/package/@fillament/i18n) — localized labels and messages.
 - [`@fillament/blueprints`](https://www.npmjs.com/package/@fillament/blueprints) — starter form blueprints.
 - [`@fillament/redux`](https://www.npmjs.com/package/@fillament/redux) — optional Redux bridge.
+- [`@fillament/webmcp`](https://www.npmjs.com/package/@fillament/webmcp) — expose forms to in-browser AI agents as WebMCP tools.
+- [`@fillament/test-data`](https://www.npmjs.com/package/@fillament/test-data) — deterministic test data generated from the validation schema.
 
 ## License
 

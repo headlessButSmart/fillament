@@ -1,0 +1,38 @@
+import { defineConfig } from "tsup";
+
+export default defineConfig((options) => ({
+  entry: {
+    "index": "src/index.ts",
+    "react": "src/react.ts",
+    "zod": "src/zod.ts",
+    "yup": "src/yup.ts",
+    "json-schema": "src/json-schema.ts",
+    "ai": "src/ai.ts",
+    "webmcp": "src/webmcp.ts",
+    "webmcp-mcp-b": "src/webmcp-mcp-b.ts",
+    "blueprints": "src/blueprints.ts",
+    "blueprints-auth": "src/blueprints-auth.ts",
+    "blueprints-contact": "src/blueprints-contact.ts",
+    "blueprints-survey": "src/blueprints-survey.ts",
+    "blueprints-commerce": "src/blueprints-commerce.ts",
+    "blueprints-onboarding": "src/blueprints-onboarding.ts",
+    "test-data": "src/test-data.ts",
+    "test-data-devtools": "src/test-data-devtools.ts",
+    "persist": "src/persist.ts",
+    "remote": "src/remote.ts",
+    "redux": "src/redux.ts",
+    "i18n": "src/i18n.ts",
+    "analytics": "src/analytics.ts",
+    "devtools": "src/devtools.ts",
+    "formik-compat": "src/formik-compat.ts",
+  },
+  format: ["esm", "cjs"],
+  dts: true,
+  sourcemap: true,
+  clean: !options.watch,
+  treeshake: true,
+  splitting: false,
+  target: "es2020",
+  // Every underlying package stays external — mega ships thin re-exports only.
+  external: [/^@fillament\//, "react", "react-dom", "zod", "yup"],
+}));
