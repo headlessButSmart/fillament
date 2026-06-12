@@ -1,6 +1,6 @@
 {
   "name": "@fillament/test-data",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Deterministic test data generation for Fillament forms — fill any form with realistic values derived from its validation schema. Includes an optional DevTools button.",
   "license": "MIT",
   "author": "headlessButSmart",

@@ -1,6 +1,6 @@
 {
   "name": "@fillament/persist",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Optional draft persistence for Fillament — localStorage, sessionStorage, and memory stores with debounce, migration, and sensitive-field exclusion.",
   "license": "MIT",
   "author": "headlessButSmart",

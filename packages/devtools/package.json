@@ -1,6 +1,6 @@
 {
   "name": "@fillament/devtools",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Free in-app DevTools panel for Fillament — inspect values, fields, errors, validation timing, render counts.",
   "license": "MIT",
   "author": "headlessButSmart",

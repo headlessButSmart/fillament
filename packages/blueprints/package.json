@@ -1,6 +1,6 @@
 {
   "name": "@fillament/blueprints",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Starter form blueprints for Fillament — login, signup, contact, surveys, commerce, and onboarding flows.",
   "license": "MIT",
   "author": "headlessButSmart",
