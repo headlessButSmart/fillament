@@ -9,6 +9,7 @@ import {
 import type { AnalyticsEvent, DevtoolsEvent, FormApi, FormState } from "@fillament/core";
 import { injectStyles } from "./styles.js";
 import { listForms, subscribeFormRegistry } from "./registry.js";
+import { listDevtoolsActions, subscribeDevtoolsActions, type DevtoolsAction } from "./actions.js";
 
 type Tab =
   | "overview"
@@ -58,6 +59,14 @@ function useRegistry(): FormApi<any>[] {
   );
 }
 
+function useActions(): DevtoolsAction[] {
+  return useSyncExternalStore(
+    (cb) => subscribeDevtoolsActions(cb),
+    () => listDevtoolsActions(),
+    () => listDevtoolsActions()
+  );
+}
+
 export function FillamentDevTools(props: FillamentDevToolsProps) {
   injectStyles();
   const registry = useRegistry();
@@ -98,6 +107,7 @@ type DevToolsForFormProps = {
 
 function DevToolsForForm({ form, open, onToggle, tab, onTabChange }: DevToolsForFormProps) {
   const state = useFormState(form);
+  const actions = useActions();
   const analyticsSub = useCallback(
     (cb: (e: AnalyticsEvent) => void) => form.subscribeAnalytics(cb),
     [form]
@@ -156,6 +166,26 @@ function DevToolsForForm({ form, open, onToggle, tab, onTabChange }: DevToolsFor
               </button>
             ))}
           </div>
+          {actions.length > 0 ? (
+            <div className="fl-devtools__actions">
+              {actions.map((action) => (
+                <button
+                  key={action.id}
+                  className="fl-devtools__action"
+                  title={action.title}
+                  onClick={() => {
+                    void Promise.resolve(action.run(form)).catch((err) => {
+                      // Actions must never crash the panel.
+                      // eslint-disable-next-line no-console
+                      console.warn(`[fillament/devtools] action "${action.id}" threw`, err);
+                    });
+                  }}
+                >
+                  {action.label}
+                </button>
+              ))}
+            </div>
+          ) : null}
           <div className="fl-devtools__body">
             {tab === "overview" && <OverviewPanel form={form} state={state} />}
             {tab === "values" && <ValuesPanel state={state} />}

@@ -97,6 +97,9 @@ export function jsonSchemaAdapter<TValues = unknown>(
 
   return {
     type: "json-schema",
+    introspect() {
+      return schema;
+    },
     async validate(values: TValues): Promise<ValidationResult<TValues>> {
       const valid = validateFn(values);
       if (valid) return { valid: true, errors: {} };

@@ -4,6 +4,7 @@ import type {
   ValidationAdapter,
   ValidationResult,
 } from "@fillament/core";
+import { yupToJsonSchema } from "./introspect.js";
 
 // Minimal shape we depend on — keeps us out of Yup's type maze.
 type YupValidationError = Error & {
@@ -16,15 +17,18 @@ type YupValidationError = Error & {
 };
 
 type YupSchema = {
-  validate: (
+  // Method (not arrow-property) syntax: method parameters are checked
+  // bivariantly, so real yup schemas — whose options take the narrower
+  // `ValidateOptions<AnyObject>` — remain assignable.
+  validate(
     value: unknown,
     options?: { abortEarly?: boolean; context?: unknown; strict?: boolean }
-  ) => Promise<unknown>;
-  validateAt?: (
+  ): Promise<unknown>;
+  validateAt?(
     path: string,
     value: unknown,
     options?: { abortEarly?: boolean; context?: unknown }
-  ) => Promise<unknown>;
+  ): Promise<unknown>;
 };
 
 function isYupValidationError(err: unknown): err is YupValidationError {
@@ -69,6 +73,9 @@ function flattenErrors(err: YupValidationError): { fields: Record<string, FormEr
 export function yupAdapter<TValues = unknown>(schema: YupSchema): ValidationAdapter<TValues> {
   return {
     type: "yup",
+    introspect() {
+      return yupToJsonSchema(schema);
+    },
     async validate(values): Promise<ValidationResult<TValues>> {
       try {
         await schema.validate(values, { abortEarly: false });
@@ -107,5 +114,7 @@ export function yupAdapter<TValues = unknown>(schema: YupSchema): ValidationAdap
     },
   };
 }
+
+export { yupToJsonSchema } from "./introspect.js";
 
 export type { YupSchema };

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "storybook dev -p 6006 --no-open",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@fillament/ai": "workspace:*",
@@ -21,6 +22,8 @@
     "@fillament/react": "workspace:*",
     "@fillament/redux": "workspace:*",
     "@fillament/remote": "workspace:*",
+    "@fillament/test-data": "workspace:*",
+    "@fillament/webmcp": "workspace:*",
     "@fillament/yup": "workspace:*",
     "@fillament/zod": "workspace:*",
     "@mlc-ai/web-llm": "^0.2.79",

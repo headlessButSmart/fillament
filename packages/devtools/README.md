@@ -29,7 +29,11 @@ function App() {
 | `registerFormForDevtools(form)` | function | Add a form to the global registry; returns an unregister function. |
 | `listForms()` | function | Snapshot of all currently-registered forms. |
 | `subscribeFormRegistry(listener)` | function | Subscribe to add / remove events; returns unsubscribe. |
+| `registerDevtoolsAction(action)` | function | Add a toolbar button to the panel; returns an unregister function. |
+| `listDevtoolsActions()` | function | Snapshot of registered actions. |
+| `subscribeDevtoolsActions(listener)` | function | Subscribe to action registry changes; returns unsubscribe. |
 | `FillamentDevToolsProps` | type | Component props. |
+| `DevtoolsAction` | type | `{ id, label, title?, run(form) }`. |
 
 ---
 
@@ -109,6 +113,33 @@ const unsub = subscribeFormRegistry(() => {
 ```
 
 `subscribeFormRegistry` plays well with `useSyncExternalStore` — the snapshot returned by `listForms()` is stable across reads.
+
+---
+
+## Action toolbar
+
+Optional modules (and your own app) can add buttons to the panel that act on the currently inspected form. The buttons render in a toolbar between the tabs and the body whenever at least one action is registered.
+
+```ts
+import { registerDevtoolsAction } from "@fillament/devtools";
+
+const unregister = registerDevtoolsAction({
+  id: "my-app/reset-to-fixture",       // same id re-registers / replaces
+  label: "Load fixture",
+  title: "Reset the form to the QA fixture",
+  run: (form) => form.reset(QA_FIXTURE),
+});
+```
+
+`run` may be async; exceptions are caught and logged so a misbehaving action can never crash the panel.
+
+This is the extension point [`@fillament/test-data`](https://github.com/headlessButSmart/fillament/tree/main/packages/test-data) uses for its **🎲 Fill test data** button:
+
+```ts
+import { enableTestDataDevtools } from "@fillament/test-data/devtools";
+
+if (import.meta.env.DEV) enableTestDataDevtools();
+```
 
 ---
 

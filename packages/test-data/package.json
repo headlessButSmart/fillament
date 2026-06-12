@@ -1,0 +1,76 @@
+{
+  "name": "@fillament/test-data",
+  "version": "0.1.0",
+  "description": "Deterministic test data generation for Fillament forms — fill any form with realistic values derived from its validation schema. Includes an optional DevTools button.",
+  "license": "MIT",
+  "author": "headlessButSmart",
+  "homepage": "https://github.com/headlessButSmart/fillament/tree/main/packages/test-data#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/headlessButSmart/fillament.git",
+    "directory": "packages/test-data"
+  },
+  "bugs": {
+    "url": "https://github.com/headlessButSmart/fillament/issues"
+  },
+  "keywords": [
+    "fillament",
+    "form",
+    "test-data",
+    "fixtures",
+    "faker",
+    "mock",
+    "testing"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./devtools": {
+      "types": "./dist/devtools.d.ts",
+      "import": "./dist/devtools.js",
+      "require": "./dist/devtools.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@fillament/core": "workspace:*",
+    "@fillament/devtools": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "@fillament/devtools": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@fillament/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@fillament/devtools": "workspace:*",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.4.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

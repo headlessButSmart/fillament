@@ -141,4 +141,25 @@ const css = `
   text-align: center;
   font-style: italic;
 }
+.fl-devtools__actions {
+  display: flex;
+  gap: 4px;
+  padding: 6px 8px;
+  background: #0d1117;
+  border-bottom: 1px solid #21262d;
+  flex-wrap: wrap;
+}
+.fl-devtools__action {
+  background: #21262d;
+  color: #e6edf3;
+  border: 1px solid #30363d;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+}
+.fl-devtools__action:hover {
+  border-color: #58a6ff;
+  color: #58a6ff;
+}
 `;

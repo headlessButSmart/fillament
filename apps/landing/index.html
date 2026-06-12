@@ -3,9 +3,138 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fillament — Type-safe forms for complex React flows</title>
-    <meta name="description" content="A modern Formik alternative for large React teams. Type-safe fields, granular re-renders, conditional flows, free DevTools, and privacy-safe analytics." />
+    <title>Fillament — Type-Safe React Form Library with AI Autofill, Validation Adapters & DevTools</title>
+    <meta
+      name="description"
+      content="Fillament is a free, MIT-licensed React form library: type-safe field paths, granular re-renders, Zod / Yup / JSON Schema validation, in-browser AI autofill, WebMCP agent tools, draft persistence, i18n, privacy-safe analytics, and a drop-in Formik compatibility layer. 17 tree-shakable packages — install only what you need, or everything at once via @fillament/mega."
+    />
+    <meta
+      name="keywords"
+      content="react form library, typescript forms, formik alternative, react hook form alternative, zod validation, yup validation, json schema forms, ai form autofill, webmcp, mcp tools, conditional fields, form devtools, form analytics, i18n forms"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#4f46e5" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Fillament" />
+    <meta property="og:title" content="Fillament — Type-Safe React Form Library with AI Autofill & DevTools" />
+    <meta
+      property="og:description"
+      content="The React form library for teams that ship complex flows. Type-safe fields, granular re-renders, any validator, in-browser AI autofill, WebMCP agent tools — 17 free, tree-shakable packages under MIT."
+    />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Fillament — Type-Safe React Form Library with AI Autofill & DevTools" />
+    <meta
+      name="twitter:description"
+      content="Type-safe fields, granular re-renders, Zod / Yup / JSON Schema validation, in-browser AI autofill, and a drop-in Formik compatibility layer. 17 free, tree-shakable packages."
+    />
+
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%234f46e5'/%3E%3Cpath d='M30 28h40v10H42v12h22v10H42v22H30z' fill='white'/%3E%3C/svg%3E" />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Fillament",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "softwareVersion": "0.1.0",
+      "license": "https://opensource.org/licenses/MIT",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "codeRepository": "https://github.com/headlessButSmart/fillament",
+      "programmingLanguage": "TypeScript",
+      "description": "Fillament is a free, MIT-licensed React form library with type-safe field paths, granular re-renders, validation adapters for Zod, Yup, and JSON Schema, in-browser AI autofill via WebLLM, WebMCP agent tools, draft persistence, internationalization, privacy-safe analytics, in-app DevTools, and a drop-in Formik compatibility layer. It ships as 17 independent, tree-shakable packages, including the all-in-one @fillament/mega bundle.",
+      "featureList": [
+        "Type-safe field paths inferred from TypeScript value types",
+        "Granular re-renders — only subscribed components update",
+        "Validation adapters for Zod, Yup, and JSON Schema, plus custom and inline validation",
+        "In-browser AI form autofill via WebLLM — no servers, no API keys",
+        "Forms exposed as WebMCP / Model Context Protocol tools for AI agents",
+        "Production-ready form blueprints: auth, contact, surveys, commerce, onboarding",
+        "Schema-derived deterministic test data generation",
+        "Draft persistence with sensitive-field exclusion",
+        "Async options, dependent dropdowns, and remote validation",
+        "Optional Redux bridge",
+        "First-class conditional fields with safe expressions",
+        "Spreadsheet-style field array tables",
+        "JSON-driven dynamic form rendering",
+        "Internationalized labels and messages",
+        "Privacy-safe form analytics with 14 event types",
+        "In-app DevTools panel",
+        "Drop-in Formik compatibility layer",
+        "SSR support for Next.js, Remix, and Vite",
+        "All-in-one @fillament/mega package — validators and AI engine bundled, tree-shakable subpath exports"
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is Fillament free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — all 17 packages are free and MIT-licensed, including DevTools, analytics, AI autofill, and WebMCP support. There is no paid tier, no SaaS, no signup, and no telemetry."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a single package that includes everything?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. @fillament/mega is the batteries-included install: every Fillament package plus Zod, Yup, AJV, the WebLLM engine, and the MCP bridge ship as bundled dependencies, re-exported behind tree-shakable subpaths like @fillament/mega/zod and /persist. The root entry combines the core engine with the React bindings, and bundlers only ship the entries you actually import — React itself stays a peer (auto-installed by npm and pnpm) so your app keeps a single React instance."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is Fillament different from Formik or React Hook Form?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Fillament combines type-safe field paths and granular re-renders with capabilities the others leave to userland: first-class conditional fields, spreadsheet-style array tables, JSON-driven rendering, in-browser AI autofill, WebMCP agent tools, draft persistence, blueprints, and privacy-safe analytics — each as an optional, tree-shakable package."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does AI autofill send my users' data to a server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. @fillament/ai runs the language model entirely in the user's browser via WebLLM. There are no API keys and no network calls with form data, and sensitive fields like password, ssn, cvv, iban, and dob are redacted before the model sees anything."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can AI agents submit forms through WebMCP?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Only if you let them. @fillament/webmcp exposes read and fill tools derived from your validation schema; the submit tool is off by default and can be gated behind a human-in-the-loop confirmation callback when you enable it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I migrate from Formik incrementally?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. @fillament/formik-compat is a drop-in replacement that implements the Formik component, useFormik, and the helper API, and auto-detects Yup and Zod schemas — so you can migrate one form at a time without a big-bang rewrite."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Fillament work with Next.js and server-side rendering?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Fillament supports Next.js (both App and Pages routers), Remix, Vite, and plain SPAs. It performs no window access during render and produces no hydration warnings."
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -5,14 +5,18 @@ import type {
   ValidationAdapter,
   ValidationResult,
 } from "@fillament/core";
+import { zodToJsonSchema } from "./introspect.js";
 
 type AnyZodSchema = {
-  safeParseAsync: (data: unknown) => Promise<{
+  // Method (not arrow-property) syntax: method parameters are checked
+  // bivariantly, so real Zod schemas — whose `pick` takes a stricter
+  // generic mask (`Mask extends Exactly<...>`) — remain assignable.
+  safeParseAsync(data: unknown): Promise<{
     success: boolean;
     data?: unknown;
     error?: { errors: Array<{ path: (string | number)[]; message: string; code?: string }> };
   }>;
-  pick?: (mask: Record<string, true>) => AnyZodSchema;
+  pick?(mask: any): AnyZodSchema;
   shape?: Record<string, unknown>;
 };
 
@@ -50,6 +54,9 @@ export function zodAdapter<TSchema extends AnyZodSchema>(
 ): ValidationAdapter<any> {
   return {
     type: "zod",
+    introspect() {
+      return zodToJsonSchema(schema as Record<string, unknown>);
+    },
     async validate(values): Promise<ValidationResult<any>> {
       const result = await schema.safeParseAsync(values);
       if (result.success) {
@@ -115,5 +122,7 @@ export function resolveSchema(value: unknown): ValidationAdapter<any> | undefine
   }
   return undefined;
 }
+
+export { zodToJsonSchema } from "./introspect.js";
 
 export type { z };
