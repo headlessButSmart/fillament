@@ -1,6 +1,6 @@
 {
   "name": "@fillament/webmcp",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Expose Fillament forms as WebMCP tools so in-browser AI agents can read, fill, and (optionally) submit them — derived from the form's validation schema. Targets the W3C Web Model Context API with an @mcp-b/transports bridge for today's browsers.",
   "license": "MIT",
   "author": "headlessButSmart",

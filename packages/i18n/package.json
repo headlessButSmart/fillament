@@ -1,6 +1,6 @@
 {
   "name": "@fillament/i18n",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Lightweight i18n adapter for Fillament — resolves keyed messages, fallbacks, and interpolation without coupling to a translation framework.",
   "license": "MIT",
   "author": "headlessButSmart",

@@ -1,6 +1,6 @@
 {
   "name": "@fillament/mega",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Everything Fillament in one install — all packages re-exported behind tree-shakable subpath entries, with Zod, Yup, the WebLLM engine, and the MCP bridge bundled as dependencies. Just add React.",
   "license": "MIT",
   "author": "headlessButSmart",

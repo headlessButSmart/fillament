@@ -1,6 +1,6 @@
 {
   "name": "@fillament/remote",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Async options, dependent lookups, and remote validation for Fillament — without forcing React Query, SWR, or Redux.",
   "license": "MIT",
   "author": "headlessButSmart",

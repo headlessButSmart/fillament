@@ -1,6 +1,6 @@
 {
   "name": "@fillament/redux",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Optional Redux bridge for Fillament — mirror form state into an existing Redux store. Redux is an optional peer; nothing else in Fillament depends on it.",
   "license": "MIT",
   "author": "headlessButSmart",
